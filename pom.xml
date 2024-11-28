@@ -20,15 +20,11 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>23</version>
-            <scope>system</scope>
-            <systemPath>D:/____JavaFX/javafx-sdk-23/lib/javafx.controls.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>23</version>
-            <scope>system</scope>
-            <systemPath>D:/____JavaFX/javafx-sdk-23/lib/javafx.fxml.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -80,7 +76,7 @@
                 </executions>
             </plugin>
 
-            <!-- Maven Shade Plugin -->
+            <!-- Maven Shade Plugin
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -106,7 +102,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
 
 
 
