@@ -19,12 +19,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
+            <version>21</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
+            <version>21</version>
         </dependency>
 
         <dependency>
@@ -85,7 +85,7 @@
                     <archive>
                         <manifest>
                             <!-- Specify the fully qualified name of your main class -->
-                            <mainClass>htl.steyr.adventcalender/htl.steyr.adventcalender.AdventCalendar</mainClass>
+                            <mainClass>htl.steyr.adventcalender.AdventCalendar</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
