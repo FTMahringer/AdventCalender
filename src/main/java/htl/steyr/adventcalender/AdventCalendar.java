@@ -1,7 +1,6 @@
 package htl.steyr.adventcalender;
 
 import javafx.application.Application;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,8 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class AdventCalendar extends Application {
 
@@ -36,17 +35,12 @@ public class AdventCalendar extends Application {
             // Add click event to open the popup with an image
             door.setOnAction(event -> showImagePopup(doorNumber));
 
-            // Calculate row and column positions for the grid
-            int row = (i - 1) / 5;
-            int col = (i - 1) % 5;
+            // Calculate row and column positions for the grid to be 6x4
+            int row = (i - 1) / 6;
+            int col = (i - 1) % 6;
 
             // Add the door to the grid
             grid.add(door, col, row);
-
-            // Center the larger 24th door
-            if (i == 24) {
-                GridPane.setHalignment(door, HPos.CENTER);
-            }
         }
 
         // Set up the main scene
@@ -60,8 +54,7 @@ public class AdventCalendar extends Application {
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Day " + doorNumber);
 
-        // Load a random image (replace with actual paths to your images)
-        Image image = new Image(getClass().getResourceAsStream("/images/" + doorNumber + ".jpg"));
+        Image image = new Image(getClass().getResource("/htl/steyr/adventcalender/imgs/door-" + doorNumber + ".png").toString());
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(400); // Adjust image size as needed
@@ -69,7 +62,7 @@ public class AdventCalendar extends Application {
 
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().add(imageView);
-        Scene popupScene = new Scene(anchorPane, 400, 300);
+        Scene popupScene = new Scene(anchorPane);
         popup.setScene(popupScene);
         popup.show();
     }
@@ -78,4 +71,3 @@ public class AdventCalendar extends Application {
         launch(args);
     }
 }
-
