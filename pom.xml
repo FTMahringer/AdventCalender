@@ -85,7 +85,7 @@
                     <archive>
                         <manifest>
                             <!-- Specify the fully qualified name of your main class -->
-                            <mainClass>htl.steyr.adventcalender.AdventCalendar</mainClass>
+                            <mainClass>htl.steyr.adventcalender/htl.steyr.adventcalender.AdventCalendar</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
