@@ -1,2 +1,70 @@
+name: Build and Deploy JAR
 
+on:
+  push:
+    branches:
+      - master
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code from the repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up JDK 23
+      - name: Set up JDK 23
+        uses: actions/setup-java@v3
+        with:
+          java-version: 23
+          distribution: oracle
+
+      # Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Build the JAR file using Maven
+      - name: Build with Maven
+        run: mvn clean package
+
+      # Create the executables folder
+      - name: Create executables folder
+        run: mkdir -p executables
+
+      # Move the JAR file to the executables folder
+      - name: Move JAR to executables
+        run: mv target/*.jar executables/
+
+      # Push the executables folder back to the repository
+      - name: Push executables to repository
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+          force: true
+          directory: executables
+
+  post-job:
+    # Add a GitHub Actions Page for downloading the JAR
+    steps:
+      - name: Create JAR download page
+        run: |
+          echo "Download the JAR file and run it with the following command:" > executables/download-page.md
+          echo "\`\`\`" >> executables/download-page.md
+          echo "java -jar <your-file-name>.jar" >> executables/download-page.md
+          echo "\`\`\`" >> executables/download-page.md
+
+      - name: Push download page to repository
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+          force: true
+          directory: executables
