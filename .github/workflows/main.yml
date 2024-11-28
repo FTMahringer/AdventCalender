@@ -33,19 +33,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Build the JAR file with Maven
+      # Step 4: Ensure JavaFX libraries are available
+      - name: Upload JavaFX libraries
+        run: |
+          mkdir -p lib
+          cp ./lib/* ./src/main/resources/
+
+      # Step 5: Build the JAR file with Maven Shade Plugin
       - name: Build with Maven
         run: mvn clean package
 
-      # Step 5: Create an executables folder
+      # Step 6: Create an executables folder
       - name: Create executables folder
         run: mkdir -p executables
 
-      # Step 6: Move the JAR file to the executables folder
+      # Step 7: Move the JAR file to the executables folder
       - name: Move JAR file
         run: mv target/*.jar executables/
 
-      # Step 7: Commit and push the JAR file to the repository
+      # Step 8: Commit and push the JAR file to the repository
       - name: Commit and push JAR file
         run: |
           git config --global user.name "github-actions[bot]"
