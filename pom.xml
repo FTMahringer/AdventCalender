@@ -61,20 +61,18 @@
                 <version>0.0.8</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
+                        <goals>
+                            <goal>jlink</goal>
+                        </goals>
                         <configuration>
                             <mainClass>htl.steyr.adventcalender/htl.steyr.adventcalender.AdventCalendar</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
+                            <launcher>adventcalender</launcher>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
 
             <!-- Maven Shade Plugin -->
             <plugin>
