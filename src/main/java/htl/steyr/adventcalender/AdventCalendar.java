@@ -54,6 +54,11 @@ public class AdventCalendar extends Application {
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Day " + doorNumber);
 
+
+
+
+
+
         Image image = new Image(getClass().getResource("/htl/steyr/adventcalender/imgs/door-" + doorNumber + ".png").toString());
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
