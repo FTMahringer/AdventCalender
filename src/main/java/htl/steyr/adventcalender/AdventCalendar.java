@@ -12,7 +12,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 public class AdventCalendar extends Application {
 
     @Override
@@ -54,11 +53,6 @@ public class AdventCalendar extends Application {
         Stage popup = new Stage();
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Day " + doorNumber);
-
-
-
-
-
 
         Image image = new Image(getClass().getResource("/htl/steyr/adventcalender/imgs/door-" + doorNumber + ".png").toString());
         ImageView imageView = new ImageView(image);
