@@ -35,7 +35,7 @@ jobs:
 
       # Step 4: Build the JAR file with Maven
       - name: Build with Maven
-        run: mvn clean javafx:jlink
+        run: mvn clean package
 
       # Step 5: Create an executables folder
       - name: Create executables folder
