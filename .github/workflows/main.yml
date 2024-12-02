@@ -65,19 +65,17 @@ jobs:
           echo "new-version=$NEW_VERSION" >> $GITHUB_ENV
 
 
-      # Step 6: Build the JAR file with Maven
+      # Step 4: Build the JAR file with Maven
       - name: Build with Maven
         run: mvn clean package
 
-      # Step 7: Create an executables folder
+      # Step 5: Create an executables folder
       - name: Create executables folder
         run: mkdir -p executables
 
-      # Step 8: Move the JAR file to the executables folder
+      # Step 6: Move the JAR file to the executables folder
       - name: Move JAR file
-        run: |
-          NEW_VERSION=${{ steps.version.outputs.new-version }}
-          mv target/*.jar "executables/AdventCalender-$NEW_VERSION.jar"
+        run: mv target/*.jar executables/
 
       # Step 9: Commit and push the updated pom.xml and JAR file
       - name: Commit and push changes

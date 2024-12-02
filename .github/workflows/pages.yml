@@ -25,7 +25,7 @@ jobs:
 
       - name: Update JS File
         run: |
-          JS_FILE="docs/script.js"
+          JS_FILE="docs/download-button.js"
           LATEST_JAR="${{ steps.latest-jar.outputs.latest-jar }}"
           sed -i "s|button\.href = .*;|button.href = '../executables/$LATEST_JAR';|" $JS_FILE
           sed -i "s|button\.download = .*;|button.download = '$LATEST_JAR';|" $JS_FILE
