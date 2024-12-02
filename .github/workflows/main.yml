@@ -46,8 +46,16 @@ jobs:
           CURRENT_VERSION=$(xmllint --xpath "string(//project/version)" pom.xml)
           MAJOR_VERSION=$(echo $CURRENT_VERSION | cut -d. -f1)
           MINOR_VERSION=$(echo $CURRENT_VERSION | cut -d. -f2)
+
+          # Ensure major version is not empty
+          if [ -z "$MAJOR_VERSION" ]; then
+            MAJOR_VERSION=1
+          fi
+
+          # Increment the minor version
           NEW_MINOR_VERSION=$((MINOR_VERSION + 1))
-          NEW_VERSION="$MAJOR_VERSION.$NEW_MINOR_VERSION"
+          NEW_VERSION="${MAJOR_VERSION}.${NEW_MINOR_VERSION}"
+
           echo "New version: $NEW_VERSION"
 
           # Safely update the version using xmlstarlet
@@ -55,6 +63,7 @@ jobs:
           
           # Output the new version for later steps
           echo "new-version=$NEW_VERSION" >> $GITHUB_ENV
+
 
       # Step 6: Build the JAR file with Maven
       - name: Build with Maven
