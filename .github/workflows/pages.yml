@@ -1,0 +1,39 @@
+name: Update GitHub Pages with Download Link
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "executables/**" # Trigger when executables are updated
+
+jobs:
+  update-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Generate HTML
+        run: |
+          mkdir -p docs
+          echo '<!DOCTYPE html>' > docs/index.html
+          echo '<html lang="en">' >> docs/index.html
+          echo '<head>' >> docs/index.html
+          echo '    <meta charset="UTF-8">' >> docs/index.html
+          echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> docs/index.html
+          echo '    <title>Download JAR File</title>' >> docs/index.html
+          echo '</head>' >> docs/index.html
+          echo '<body>' >> docs/index.html
+          echo '    <h1>Download My Application</h1>' >> docs/index.html
+          echo '    <p>Click the link below to download the latest version of the application:</p>' >> docs/index.html
+          echo "    <a href='https://github.com/${{ github.repository }}/raw/main/executables/*.jar' download>Download My App</a>" >> docs/index.html
+          echo '</body>' >> docs/index.html
+          echo '</html>' >> docs/index.html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs
