@@ -3,13 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download JAR File</title>
+    <title>Download Application</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Download My Application</h1>
-<p>Click the link below to download the latest version of the application:</p>
-<a href="https://github.com/ftmahringer/AdventCalender/raw/main/executables/AdventCalender-1.0.jar" download>
-    Download My App
-</a>
+<header class="header">
+    <h1>Download My Application</h1>
+</header>
+<main class="content">
+    <p>Get the latest version of my application by clicking the download button below:</p>
+
+    <br>
+    <p>Start the jar file in terminal with Java using:</p>
+    <pre class="code-block">
+    java --module-path "D:\____JavaFX\javafx-sdk-23\lib" --add-modules javafx.controls,javafx.fxml -jar AdventCalender-1.0.jar
+    </pre>
+    <br>
+
+
+
+    <div id="download-container"></div>
+</main>
+<footer class="footer">
+    <p>&copy; 2024 Fynn Mahringer. All rights reserved.</p>
+</footer>
+<script src="download-button.js"></script>
 </body>
 </html>

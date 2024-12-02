@@ -15,22 +15,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
 
-      - name: Generate HTML
+      - name: Determine latest JAR
+        id: latest-jar
         run: |
-          mkdir -p docs
-          echo '<!DOCTYPE html>' > docs/index.html
-          echo '<html lang="en">' >> docs/index.html
-          echo '<head>' >> docs/index.html
-          echo '    <meta charset="UTF-8">' >> docs/index.html
-          echo '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' >> docs/index.html
-          echo '    <title>Download JAR File</title>' >> docs/index.html
-          echo '</head>' >> docs/index.html
-          echo '<body>' >> docs/index.html
-          echo '    <h1>Download My Application</h1>' >> docs/index.html
-          echo '    <p>Click the link below to download the latest version of the application:</p>' >> docs/index.html
-          echo "    <a href='https://github.com/${{ github.repository }}/raw/main/executables/*.jar' download>Download My App</a>" >> docs/index.html
-          echo '</body>' >> docs/index.html
-          echo '</html>' >> docs/index.html
+          # Find the latest JAR file in the executables directory
+          LATEST_JAR=$(ls -t executables/*.jar | head -n 1 | xargs basename)
+          echo "Latest JAR file: $LATEST_JAR"
+          echo "::set-output name=latest-jar::$LATEST_JAR"
+
+      - name: Update JS File
+        run: |
+          JS_FILE="docs/script.js"
+          LATEST_JAR="${{ steps.latest-jar.outputs.latest-jar }}"
+          sed -i "s|button\.href = .*;|button.href = '../executables/$LATEST_JAR';|" $JS_FILE
+          sed -i "s|button\.download = .*;|button.download = '$LATEST_JAR';|" $JS_FILE
+          echo "Updated $JS_FILE with the latest JAR file: $LATEST_JAR"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
