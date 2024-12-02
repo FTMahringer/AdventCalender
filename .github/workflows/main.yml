@@ -59,9 +59,13 @@ jobs:
           echo "New version: $NEW_VERSION"
 
           # Safely update the version using xmlstarlet
-          xmlstarlet ed --inplace -u "//_:project/_:version" -v "$NEW_VERSION" pom.xml
-          
-          # Output the new version for later steps
+          xmlstarlet ed --inplace \
+            -N x="http://maven.apache.org/POM/4.0.0" \
+            -u "/x:project/x:version" \
+            -v "$NEW_VERSION" pom.xml
+  
+
+  # Output the new version for later steps
           echo "new-version=$NEW_VERSION" >> $GITHUB_ENV
 
 
