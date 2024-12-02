@@ -33,9 +33,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Install xmllint
-      - name: Install xmllint
-        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+      # Step 4: Install required tools
+      - name: Install required tools
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils xmlstarlet
+
 
       # Step 5: Increment version in pom.xml
       - name: Increment version
@@ -49,11 +50,11 @@ jobs:
           NEW_VERSION="$MAJOR_VERSION.$NEW_MINOR_VERSION"
           echo "New version: $NEW_VERSION"
 
-          # Update the pom.xml with the new version
-          xmllint --shell pom.xml <<< "set //project/version $NEW_VERSION" > pom.xml.tmp && mv pom.xml.tmp pom.xml
+          # Safely update the version using xmlstarlet
+          xmlstarlet ed --inplace -u "//_:project/_:version" -v "$NEW_VERSION" pom.xml
           
           # Output the new version for later steps
-          echo "::set-output name=new-version::$NEW_VERSION"
+          echo "new-version=$NEW_VERSION" >> $GITHUB_ENV
 
       # Step 6: Build the JAR file with Maven
       - name: Build with Maven
