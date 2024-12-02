@@ -20,6 +20,8 @@ public class AdventCalendar extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Advent Calendar");
 
+
+
         // Create a GridPane for the calendar
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
