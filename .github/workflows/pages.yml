@@ -18,20 +18,20 @@ jobs:
       - name: Determine most recent file
         id: recent-file
         run: |
-          # Find the most recent file in the executables directory
           RECENT_FILE=$(find executables -type f -printf '%T@ %p\n' | sort -n -r | head -n 1 | awk '{print $2}')
           RECENT_FILENAME=$(basename "$RECENT_FILE")
           echo "Most recent file: $RECENT_FILENAME"
-          echo "::set-output name=recent-file::$RECENT_FILE"
-          echo "::set-output name=recent-filename::$RECENT_FILENAME"
+          echo "RECENT_FILE=$RECENT_FILE" >> $GITHUB_ENV
+          echo "RECENT_FILENAME=$RECENT_FILENAME" >> $GITHUB_ENV
+
 
       - name: Update JS File
         run: |
           JS_FILE="docs/download-button.js"
-          RECENT_FILENAME="${{ steps.recent-file.outputs.recent-filename }}"
-          sed -i "s|button\.href = .*;|button.href = 'https://raw.githubusercontent.com/ftmahringer/AdventCalender/master/executables/$RECENT_FILENAME';|" $JS_FILE
-          sed -i "s|button\.download = .*;|button.download = '$RECENT_FILENAME';|" $JS_FILE
+          sed -i "s|button\\.href = .*;|button.href = 'https://raw.githubusercontent.com/ftmahringer/AdventCalender/master/executables/$RECENT_FILENAME';|" $JS_FILE
+          sed -i "s|button\\.download = .*;|button.download = '$RECENT_FILENAME';|" $JS_FILE
           echo "Updated $JS_FILE with the most recent file: $RECENT_FILENAME"
+      
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
