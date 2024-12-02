@@ -33,25 +33,45 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Build the JAR file with Maven
+      # Step 4: Increment version in pom.xml
+      - name: Increment version
+        id: version
+        run: |
+          # Extract current version from pom.xml
+          CURRENT_VERSION=$(xmllint --xpath "string(//project/version)" pom.xml)
+          MAJOR_VERSION=$(echo $CURRENT_VERSION | cut -d. -f1)
+          MINOR_VERSION=$(echo $CURRENT_VERSION | cut -d. -f2)
+          NEW_MINOR_VERSION=$((MINOR_VERSION + 1))
+          NEW_VERSION="$MAJOR_VERSION.$NEW_MINOR_VERSION"
+          echo "New version: $NEW_VERSION"
+
+          # Update the pom.xml with the new version
+          xmllint --shell pom.xml <<< "set //project/version $NEW_VERSION" > pom.xml.tmp && mv pom.xml.tmp pom.xml
+          
+          # Output the new version for later steps
+          echo "::set-output name=new-version::$NEW_VERSION"
+
+      # Step 5: Build the JAR file with Maven
       - name: Build with Maven
         run: mvn clean package
 
-      # Step 5: Create an executables folder
+      # Step 6: Create an executables folder
       - name: Create executables folder
         run: mkdir -p executables
 
-      # Step 6: Move the JAR file to the executables folder
+      # Step 7: Move the JAR file to the executables folder
       - name: Move JAR file
-        run: mv target/*.jar executables/
+        run: |
+          NEW_VERSION=${{ steps.version.outputs.new-version }}
+          mv target/*.jar "executables/AdventCalender-$NEW_VERSION.jar"
 
-      # Step 7: Commit and push the JAR file to the repository
-      - name: Commit and push JAR file
+      # Step 8: Commit and push the updated pom.xml and JAR file
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add executables/
-          git commit -m "Add built JAR file"
+          git add pom.xml executables/
+          git commit -m "Update version to ${{ steps.version.outputs.new-version }} and add JAR file"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
